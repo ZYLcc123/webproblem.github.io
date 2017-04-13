@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -100,7 +100,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -195,6 +195,26 @@
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -324,117 +344,18 @@
       
         
           
-            <blockquote>
-<p>call，apply详解</p>
-</blockquote>
-<p>javascript中，call和apply方法的用途是<strong>为了扩充函数赖以生存的作用域</strong>，通俗点来说，就是为了动态改变函数体内部this的指向。<br>用途：  扩充函数赖以生存的作用域。<br>好处： 对象与方法之间不需要任何的耦合关系。<br>javascript的一大特点是，函数存在<strong>定义时上下文</strong>，<strong>运行时上下文</strong>，和<strong>上下文是可变的</strong>，这样的概念。</p>
-<p>先上一个例子：</p>
-<pre><code>function showColor(){
-    console.log(&quot;my color is:&quot; + this.color);
-}
-window.color = &quot;red&quot;;
-
-showColor.call(window);    //my color is:red
-</code></pre><p>上面的例子中，<strong>shouwColor</strong>函数并没有对外部调用自己传入的参数进行接收，那么调用者是怎么样通过调用该函数来得到想要的结果呢？<br>先来解释下，上面这段代码。代码中，定义了一个<strong>showColor</strong>函数，以及一个挂载在window下的一个全局对象<strong>color</strong>，showColor.call(this)执行了<strong>shouwColor</strong>函数，并且改变了<strong>shouwColor</strong>函数中this的指向，call方法传入的第一个参数，始终代表着this的指向。当传入的第一个参数是window的时候，<strong>shouwColor</strong>函数中的this就指向了window，那么this.color就相当于window.colorl了，打印出来的结果就自然是window.color的值了。</p>
-<pre><code>var colorObj = {&quot;color&quot;:&quot;blue&quot;};
-showColor.call(colorObj);    //my color is:blue
-</code></pre><p>那么我们再来定义一个<strong>colorObj </strong>对象，对象中，有一个属性color，call方法中第一个参数是<strong>colorObj </strong>对象，那么一样的道理，<strong>shouwColor</strong>函数中的this就指向了<strong>colorObj </strong>对象了。这就是call方法的简单运用了。</p>
-<blockquote>
-<p>call，apply方法的定义</p>
-</blockquote>
-<p><strong>call</strong>方法:<br>语法：call([thisObj[,arg1[, arg2[,   [,.argN]]]]])<br>定义：调用一个对象的一个方法，以另一个对象替换当前对象。<br>说明：<br>call 方法可以用来代替另一个对象调用一个方法。call 方法可将一个函数的对象上下文从初始的上下文改变为由 thisObj 指定的新对象。<br>如果没有提供 thisObj 参数，那么 window 对象被用作 thisObj。</p>
-<p><strong>apply</strong>方法：<br>语法：apply([thisObj[,argArray]])<br>定义：应用某一对象的一个方法，用另一个对象替换当前对象。<br>说明：<br>如果 argArray 不是一个有效的数组或者不是 arguments 对象，那么将导致一个 TypeError。<br>如果没有提供 argArray 和 thisObj 任何一个参数，那么 window 对象将被用作 thisObj， 并且无法被传递任何参数。</p>
-<blockquote>
-<p>call，apply方法的区别</p>
-</blockquote>
-<p>对于 apply、call 二者而言，作用完全一样，只是接受参数的方式不太一样。例如，有一个函数定义如下：</p>
-<pre><code>function test(arg1,arg2){
-    ......
-}
-</code></pre><p>就可以通过以下方式调用了</p>
-<pre><code>test.call(this,arg1,arg2);
-test.apply(this,[arg1,arg2]);
-</code></pre><p>其中 this 是你想指定的上下文，可以是任何一个 JavaScript 对象(JavaScript 中一切皆对象)，call 需要把参数按顺序传递进去，而 apply 则是把参数放在数组里。</p>
-<blockquote>
-<p>call，apply方法的示例</p>
-</blockquote>
-<p><strong>1.数组的合并</strong></p>
-<pre><code>var facebookImg = [&quot;fb1.jpg&quot;,&quot;fb2.jpg&quot;,&quot;fb3.jpg&quot;];
-var youtubeImg = [&quot;yt1.jpg&quot;,&quot;yt2.jpg&quot;,&quot;yt3.jpg&quot;];
-Array.prototype.push.apply(facebookImg,youtubeImg); //返回值为合并后的facebookImg数组的长度
-</code></pre><p>facebookImg的值为: [“fb1.jpg”,”fb2.jpg”,”fb3.jpg”，”yt1.jpg”,”yt2.jpg”,”yt3.jpg”]<br>或者合并后赋值给一个新数组(不改变原数组的值)</p>
-<pre><code>var facebookImg = [&quot;fb1.jpg&quot;,&quot;fb2.jpg&quot;,&quot;fb3.jpg&quot;];
-var youtubeImg = [&quot;yt1.jpg&quot;,&quot;yt2.jpg&quot;,&quot;yt3.jpg&quot;];
-var allImg = [];
-allImg.push.apply(allImg,facebookImg);
-allImg.push.apply(allImg,youtubeImg);
-</code></pre><p><strong>2.获取数组中的最大值和最小值</strong><br>js获取数组中的最大值和最小值,有多种方法，比如冒泡排序等，使用apply和call方法也是可以达到相同的效果的。</p>
-<pre><code>var  numbers = [5, 458 , 120 , -215 ]; 
-var applyMaxInNumbers = Math.max.apply(Math, numbers);   //458
-var applyMinInNumbers = Math.min.apply(Math,numbers); //-215
-</code></pre><p><strong>number 本身没有 max 方法，但是 Math 有，我们就可以借助 call 或者 apply 使用其方法。</strong></p>
-<p><strong>3.类（伪）数组使用数组方法</strong><br>Javascript中存在一种名为伪数组的对象结构。比较特别的是 arguments 对象，还有像调用 getElementsByTagName , document.childNodes 之类的，它们返回NodeList对象都属于伪数组。不能应用 Array下的 push , pop 等方法。<br>但是我们能通过 Array.prototype.slice.call 转换为真正的数组的带有 length 属性的对象，这样 domNodes 就可以应用 Array 下的所有方法了。</p>
-<p><strong>4.定义一个 log 方法，让它可以代理 console.log 方法</strong><br>一般我们都会去这样的实现：</p>
-<pre><code>function log(msg){
-    console.log(msg);
-}
-log(&quot;testData1&quot;);          //testData1
-log(&quot;data1&quot;,&quot;data2&quot;);      //data1
-</code></pre><p>上面的这种实现的方式在传入一个参数的时候是满足要求的，但是当传入的参数是多个的话，就失效了，因为log方法只接受了第一个且唯一一个参数。那么如果要在传入多个参数的情况下也能够实现，就可以用到call和apply方法了，注意，当不清楚参数的具体个数时，建议最好运用apply方法。</p>
-<pre><code>function log(){
-    console.log.apply(window,arguments);
-}
-log(&quot;testData1&quot;);          //testData1
-log(&quot;data1&quot;,&quot;data2&quot;,&quot;data3&quot;);      //data1,data2,data3
-</code></pre><p>接下来的要求是给每一个 log 消息添加一个”(doView)”的前辍，比如：</p>
-<pre><code>log(&quot;hello world&quot;);    //(doView)hello world
-</code></pre><p>那么就可以利用伪数组转为标准数组的方式，然后再使用unshift方法操作数组</p>
-<pre><code>function log(){
-  var argsData = Array.prototype.slice.call(arguments);
-  argsData.unshift(&apos;(doView)&apos;);
-  console.log.apply(window, args);
-};
-</code></pre><p><strong>5.构造函数继承的实现</strong><br>javascript中的继承方式实现由多种，包括原型链继承，构造函数继承与组合继承等。那么现在就用call和apply方法来简单实现下javascript中的构造函数的继承吧。</p>
-<pre><code>function superType(name){
-    this.name = name;
-}
-function subType(name,age){
-    this.age = age;
-    superType.call(this,name);
-}
-var types1 = new subType(&quot;yqxcn&quot;, 30);
-console.log(&quot;age:&quot; + types1.age);        //age:30
-console.log(&quot;name:&quot; + types1.name);      //name:yqxcn,继承自superType属性值
-
-var types2 = new subType(&quot;wx272252&quot;, 18);
-console.log(&quot;age:&quot; + types2.age);        //age:18
-console.log(&quot;name:&quot; + types2.name);      //name:wx272252,继承自superType属性值
-</code></pre><blockquote>
-<p>bind的用法</p>
-</blockquote>
-<p>bind方法虽然与call,apply的用法有点不同，但是其作用也是一样的，也是可以改变函数体内this的指向。<br><strong>MDN的解释是：bind()方法会创建一个新函数，称为绑定函数，当调用这个绑定函数时，绑定函数会以创建它时传入 bind()方法的第一个参数作为 this，传入 bind() 方法的第二个以及以后的参数加上绑定函数运行时本身的参数按照顺序作为原函数的参数来调用原函数。</strong></p>
-<p>以最开始的例子为例：</p>
-<pre><code>function showColor(){
-    console.log(&quot;my color is:&quot; + this.color);
-}
-window.color = &quot;red&quot;;
-showColor.bind(window);      //这里并不会打印出想要的结果
-</code></pre><p>这个例子就可以很好的证明了上面MDN的解释了，当浏览器执行”showColor.bind(window); “这一句代码的时候，bind()创建了一个绑定函数，也就是说这句代码只是创建了一个函数，却并没有调用执行该函数，就像我们自己定义了一个普通函数而没有调用它，所以这句代码需要改成如下：</p>
-<pre><code>showColor.bind(window)();    //my color is:red
-</code></pre><p>这也是apply、call、bind的不同之处。<strong>bind方法是创建一个函数，然后可以在需要调用的时候再执行函数，并非是立即执行函数；而call，apply是在改变了上下文中的this指向后并立即执行函数。</strong></p>
-<blockquote>
-<p>总结</p>
-</blockquote>
-<ul>
-<li>call，apply，bind都是可以改变函数体内this的指向。</li>
-<li>call，apply，bind使用时，传入的第一个参数都是用来传递this的指向的，也就是对上下文的指定。</li>
-<li>call，apply，bind都是可以传入多个参数，不同的是，call和bind的后续参数都是按照顺序传参，而apply的传参类型是数组；bind的参数可以在函数执行的时候再次添加。</li>
-</ul>
-<blockquote>
-<p><strong>原创文章，站在前辈们的经验上的总结，文中如有不正之处，还望指正！</strong></p>
-</blockquote>
-
           
+call，apply详解
+
+javascript中，call和apply方法的用途是为了扩充函数赖以生存的作用域，通俗点来说，就是为了动态改变函数体内部this的指向。用途：  扩充函数赖以生存的作用域。好处： 对象与方法之间不需要任何的耦合关系。javascript的一大特点是，函数存在定义时上
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/12/js基础知识-call-apply-bind的用法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -553,17 +474,15 @@ showColor.bind(window);      //这里并不会打印出想要的结果
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/12/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -702,7 +621,7 @@ showColor.bind(window);      //这里并不会打印出想要的结果
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Mist
   </a>
 </div>
 
